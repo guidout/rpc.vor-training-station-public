@@ -1,0 +1,19 @@
+{
+	"ColorCropImg0_name" : "ColorCropImg0.jpg",
+	"ColorCropImg1_name" : "ColorCropImg1.jpg",
+	"ColorCropImg2_name" : "ColorCropImg2.jpg",
+	"ColorImg0_name" : "D:\\Projects\\RPC Training Station\\_repos\\rpc.vor-training-station-light\\TestPictures\\ColorImg0.jpg",
+	"ColorImg1_name" : "D:\\Projects\\RPC Training Station\\_repos\\rpc.vor-training-station-light\\TestPictures\\ColorImg1.jpg",
+	"ColorImg2_name" : "D:\\Projects\\RPC Training Station\\_repos\\rpc.vor-training-station-light\\TestPictures\\ColorImg2.jpg",
+	"DepthDelta_mm" : 50,
+	"DepthImg0_name" : "DepthImg0.jpg",
+	"DepthImg1_name" : "DepthImg1.jpg",
+	"DepthImg2_name" : "DepthImg2.jpg",
+	"ImgCrop_edgeTreshold_HorizBottom" : 0.5,
+	"ImgCrop_edgeTreshold_HorizTop" : 0.1,
+	"ImgCrop_edgeTreshold_Vert" : 0.1,
+	"configFileName" : "KinectScanConfig.json",
+	"exitError" : "",
+	"keepAlive" : true,
+	"takePictures" : true
+}

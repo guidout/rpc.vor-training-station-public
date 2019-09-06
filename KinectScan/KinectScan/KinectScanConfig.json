@@ -1,0 +1,21 @@
+{
+	"ColorCropImg0_name" : "ColorCropImg0.jpg",
+	"ColorCropImg1_name" : "ColorCropImg1.jpg",
+	"ColorCropImg2_name" : "ColorCropImg2.jpg",
+	"ColorImg0_name" : "ColorImg0.jpg",
+	"ColorImg1_name" : "ColorImg1.jpg",
+	"ColorImg2_name" : "ColorImg2.jpg",
+	"DepthDelta_mm" : 50,
+	"DepthImg0_name" : "DepthImg0.png",
+	"DepthImg1_name" : "DepthImg1.png",
+	"DepthImg2_name" : "DepthImg2.png",
+	"FrameMarginLRSides" : 200,
+	"FrameMarginTBSides" : 105,
+	"ImgCrop_edgeTreshold_HorizBottom" : 0.5,
+	"ImgCrop_edgeTreshold_HorizTop" : 0.10000000000000001,
+	"ImgCrop_edgeTreshold_Vert" : 0.10000000000000001,
+	"configFileName" : "KinectScanConfig.json",
+	"exitError" : "No Kinects found",
+	"keepAlive" : true,
+	"takePictures" : true
+}

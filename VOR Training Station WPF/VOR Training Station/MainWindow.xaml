@@ -1,0 +1,193 @@
+﻿<Window x:Class="VOR_Training_Station.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VOR_Training_Station"
+        xmlns:cam="clr-namespace:WebcamControl;assembly=WebcamControl"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Loaded="MainWindow_Loaded"
+        Closing="MainWindow_Closing"
+        WindowState="Normal"
+        WindowStyle="SingleBorderWindow"
+        Title="VOR - Training Station" Height="auto" Width="auto" MinHeight="850"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        x:Name="mainWin" UseLayoutRounding="True">
+
+    <materialDesign:DialogHost x:Name="winDialog" UseLayoutRounding="True" BorderThickness="10" BorderBrush="Wheat">
+        <materialDesign:DialogHost.DialogContent>
+            <StackPanel UseLayoutRounding="True">
+                <StackPanel x:Name="mwBusy">
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                         Value="0"
+                         Width="50"
+                         Height="50"
+                         IsIndeterminate="True" UseLayoutRounding="True" />
+                </StackPanel>
+                <StackPanel x:Name="mwUPCnotFoundDialog" Orientation="Vertical" UseLayoutRounding="True">
+                    <TextBlock Text="UPC not found..." Margin="20" UseLayoutRounding="True"/>
+                    <Button x:Name="dialogOKbutton" Click="DialogOK_Click" Content="Scan again" Margin="5" UseLayoutRounding="True" />
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <Frame x:FieldModifier="public" x:Name="ContentFrame" VerticalAlignment="Center" NavigationUIVisibility="Hidden"/>
+        </StackPanel>
+        <!-- ######## -->
+        <!--TOP CAMERA-->
+        <materialDesign:Card Padding="10" 
+                            Margin="10" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            Grid.Row="0"
+                            Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:Chip Content="Top Camera" 
+                                    FontSize="15" 
+                                    FontStyle="Italic"
+                                    FontWeight="Bold" 
+                                    HorizontalAlignment="Center" 
+                                    Margin="10" 
+                                    Grid.Row="0"
+                                    IsEnabled="False"/>
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1">
+                    <controls:VideoCaptureElement x:Name="TopCam" 
+                                                Grid.Row="1" 
+                                                EnableSampleGrabbing="False" 
+                                                Visibility="Visible"
+                                                Margin="4"/>
+                    <Image x:Name="cam0Img" Width="300" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        Grid.Row="1"/>
+                    <TextBlock x:Name="cam0NotFound_TextBlock" Text="Camera not found" 
+                            FontSize="25" 
+                            HorizontalAlignment="Center"
+                            Margin="20"
+                            Visibility="Collapsed"
+                            Grid.Row="1"/>
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+
+        <!-- ########### -->
+        <!--SIDE 1 CAMERA-->
+        <materialDesign:Card Padding="10" 
+                            Margin="10" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            Grid.Row="1"
+                            Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:Chip Content="Side 1 Camera" 
+                                    FontSize="15" 
+                                    FontStyle="Italic"
+                                    FontWeight="Bold" 
+                                    HorizontalAlignment="Center" 
+                                    Margin="10" 
+                                    Grid.Row="0"
+                                    IsEnabled="False"/>
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" >
+                    <controls:VideoCaptureElement x:Name="Side1Cam" 
+                                                Grid.Row="1" 
+                                                EnableSampleGrabbing="False" 
+                                                Visibility="Visible"
+                                                Margin="4"/>
+                    <Image x:Name="cam1Img" Width="300" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center" 
+                        Grid.Row="1"/>
+                    <TextBlock x:Name="cam1NotFound_TextBlock" Text="Camera not found" 
+                        FontSize="25" 
+                        HorizontalAlignment="Center" 
+                        Margin="20"
+                        Visibility="Collapsed"
+                        Grid.Row="1"/>
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+
+        <!-- ########### -->
+        <!--SIDE 2 CAMERA-->
+        <materialDesign:Card Padding="10" 
+                            Margin="10" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            Grid.Row="1"
+                            Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:Chip Content="Side 2 Camera" 
+                                    FontSize="15" 
+                                    FontStyle="Italic"
+                                    FontWeight="Bold" 
+                                    HorizontalAlignment="Center" 
+                                    Margin="10" 
+                                    Grid.Row="0"
+                                    IsEnabled="False"/>
+                <!--<TextBlock Text="Side 2 Camera" FontSize="25" HorizontalAlignment="Center" Margin="10" Grid.Row="0"/>-->
+
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1">
+                    <controls:VideoCaptureElement x:Name="Side2Cam" 
+                                                Grid.Row="1" 
+                                                EnableSampleGrabbing="False" 
+                                                Visibility="Visible"
+                                                Margin="4"/>
+                    <Image x:Name="cam2Img" Width="300" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    Grid.Row="1"/>
+                    <TextBlock x:Name="cam2NotFound_TextBlock" Text="Camera not found" 
+                        FontSize="25" 
+                        HorizontalAlignment="Center" 
+                        Margin="20"
+                        Visibility="Collapsed"
+                        Grid.Row="1"/>
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+    </materialDesign:DialogHost>
+</Window>
