@@ -42,7 +42,6 @@ namespace VOR_Training_Station
         public Thread KinectScanThread;
 
         public ReadAppConfig appConfig = new ReadAppConfig();
-        public TensorIoTAPI tensorIoTAPI = new TensorIoTAPI();
         public UPCProductReference UPCRefereceListSelected;
         public ObservableCollection<UPCProductReference> UPCRefereceList = new ObservableCollection<UPCProductReference>();
         #endregion

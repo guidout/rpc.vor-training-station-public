@@ -74,8 +74,8 @@ int main(int argc, char** argv)
 
 	// Images
 	Mat colorImg[3];
-	Mat depthTemplate(Size(1920, 1080), CV_16U);
-	Mat depthImg[] = {depthTemplate, depthTemplate, depthTemplate};
+	Mat depthTemplate(Size(1920, 1080), CV_16UC1);
+	Mat depthImg[3];// = { depthTemplate, depthTemplate, depthTemplate };
 	Mat croppedImg[3];
 	Mat depthTest;
 
@@ -189,7 +189,7 @@ int main(int argc, char** argv)
 
 		if (takePictures) 
 		{
-			for (uint32_t camNum = 0; camNum < device_count; camNum++)
+			for (int camNum = 0; camNum < device_count; camNum++)
 			{
 				// Get a depth frame
 				switch (k4a_device_get_capture(device[camNum], &capture, TIMEOUT_IN_MS))
@@ -261,9 +261,10 @@ int main(int argc, char** argv)
 				tstart = time(0);
 
 				depthImg[camNum] = KinectLib::getDepthImg(transformed_depth_image);
-				//Mat depthTest2 = KinectLib::getDepthImg(transformed_depth_image);
-				//cv::imwrite("DepthImg-Top.jpg", depthTest2, CV_16U);
-
+				
+				//Mat depthTemp = KinectLib::getDepthImg(transformed_depth_image);
+				//memcpy(depthTemp.data, depthImg[camNum].data, (1920*1080) * sizeof(uint16_t));
+				
 				if (debug) {
 					tend = time(0);
 					cout << "It took " << difftime(tend, tstart) << " second(s) to save DepthImg." << endl;
@@ -285,20 +286,21 @@ int main(int argc, char** argv)
 				//file2 << "dept2colorhMat" << dept2colorhMat;
 				
 				
-		//		// release all
-				k4a_image_release(color_image);
-				k4a_image_release(depth_image);
-				k4a_image_release(transformed_depth_image);
-				
-				k4a_capture_release(capture);
+				//// release all
+				//k4a_image_release(color_image);
+				//k4a_image_release(depth_image);
+				//k4a_image_release(transformed_depth_image);
+				//
+				//k4a_capture_release(capture);
 				//k4a_transformation_destroy(transformation[camNum]);
 			}
 			// All pictures are taken and postprocessed
 			// Write img files now
 			// TOP CAMERA
 			cv::imwrite("ColorImg-Top.jpg", colorImg[0]);
-			//imwrite("DepthImg-Top.jpg", depthTest);
-			//imwrite("DepthImg-Top.jpg", depthImg[0]);
+			//imwrite("DepthImg-Top.png", depthTest2);
+			//depthImg[0].convertTo(depthImg[0], CV_16UC1);
+			imwrite("DepthImg-Top.png", depthImg[0] );
 			cv::imwrite("ColorCropImg-Top.jpg", croppedImg[0]);
 			// this "if" is just for debugging
 			if (device_count == 3) 
@@ -311,10 +313,10 @@ int main(int argc, char** argv)
 					SmallCam = 2;
 				}
 				cv::imwrite("ColorImg-Small.jpg", colorImg[SmallCam]);
-				//cv::imwrite("DepthImg-Small.png", depthImg[SmallCam]);
+				cv::imwrite("DepthImg-Small.png", depthImg[SmallCam]);
 				cv::imwrite("ColorCropImg-Small.jpg", croppedImg[SmallCam]);
 				cv::imwrite("ColorImg-Large.jpg", colorImg[LargeCam]);
-				//cv::imwrite("DepthImg-Large.png", depthImg[LargeCam]);
+				cv::imwrite("DepthImg-Large.png", depthImg[LargeCam]);
 				cv::imwrite("ColorCropImg-Large.jpg", croppedImg[LargeCam]);
 			}
 		}

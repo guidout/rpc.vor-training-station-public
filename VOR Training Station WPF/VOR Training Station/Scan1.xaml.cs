@@ -140,7 +140,7 @@ namespace VOR_Training_Station
                 kinectScanConfig.setRunStatus(takePictures: true, keepAlive: true);
                 kinectScanConfig.makeConfigFile();
             }
-            deleteExistingPictures();
+            //deleteExistingPictures();
         }
 
         private void Submit_ButtonClick(object sender, RoutedEventArgs e)
@@ -154,7 +154,7 @@ namespace VOR_Training_Station
             sendPituresToAPI(UPCRefereceListSelected, kinectScanConfig);
 
             // DELETE PICTURES (OPTIONAL)
-            deleteExistingPictures();
+            //deleteExistingPictures();
 
             // 
             // Set Page status
@@ -172,15 +172,15 @@ namespace VOR_Training_Station
 
         private void SubmitAndTakeMore_ButtonClick(object sender, RoutedEventArgs e)
         {
-            // Re-enable picture refreshing
-            kinectScanConfig.setRunStatus(true, true);
-            kinectScanConfig.makeConfigFile();
-
             // Send pictures to tensor
             sendPituresToAPI(UPCRefereceListSelected, kinectScanConfig);
 
             // Delete picture sent 
-            deleteExistingPictures();
+            //deleteExistingPictures();
+
+            // Re-enable picture refreshing
+            kinectScanConfig.setRunStatus(true, true);
+            kinectScanConfig.makeConfigFile();
 
             // Set PageStatus
             PageStatus = 2;
@@ -200,80 +200,8 @@ namespace VOR_Training_Station
 
         public void sendPituresToAPI(UPCProductReference UPCRefereceListSelected, KinectScanConfig kinectScanConfig)
         {
-            // Create json string
-            JObject postBody =
-                new JObject(
-                    new JProperty("listOfSides",
-                        new JArray(new List<string>() {
-                            UPCRefereceListSelected.UPCcode + "-" + UPCRefereceListSelected.RefNo + "-Top",
-                            UPCRefereceListSelected.UPCcode + "-" + UPCRefereceListSelected.RefNo + "-Large",
-                            UPCRefereceListSelected.UPCcode + "-" + UPCRefereceListSelected.RefNo + "-Small",})
-                        ),
-                    new JProperty("UPC", UPCRefereceListSelected.UPCcode),
-                    new JProperty("refNo", UPCRefereceListSelected.RefNo)
-                    );
-            //string test = postBody.ToString();
-            var client = new RestClient("https://93o9cnkow3.execute-api.us-west-2.amazonaws.com/dev/imagedata");
-            client.Authenticator = new HttpBasicAuthenticator("", "");
-            var request = new RestRequest("", Method.POST);
-            request.AddParameter("application/json; charset=utf-8", postBody.ToString(), ParameterType.RequestBody);
-            request.RequestFormat = RestSharp.DataFormat.Json;
-            var response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                JObject responseParsed = JObject.Parse(response.Content);
-                JArray uncroppedUrls = (JArray)responseParsed["body"]["uncroppedUrls"];
-                JArray croppedUrls = (JArray)responseParsed["body"]["croppedUrls"];
-                JArray irUrls = (JArray)responseParsed["body"]["irUrls"];
-                if ( uncroppedUrls.Count == 3 && croppedUrls.Count == 3 && irUrls.Count == 3 )
-                {
-                    foreach (var uncroppedUrl in uncroppedUrls)
-                    {
-                        string ImgData;
-                        string urlKey = (string)uncroppedUrl["fields"]["key"];
-                        string ImgFileName;
-                        //if ( urlKey.Contains("Top") ) { ImgData = File.ReadAllText("ColorImg-Top.jpg"); }
-                        //else if (urlKey.Contains("Small")) { ImgData = File.ReadAllText("ColorImg-Small.jpg"); }
-                        //else { ImgData = System.IO.File.ReadAllText("ColorImg-Large.jpg"); }
-                        if (urlKey.Contains("Top")) { ImgFileName = "ColorImg-Top.jpg"; }
-                        else if (urlKey.Contains("Small")) { ImgFileName = "ColorImg-Small.jpg"; }
-                        else { ImgFileName = "ColorImg-Large.jpg"; }
-                        using (FileStream stream = File.Open(ImgFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            using (StreamReader reader = new StreamReader(stream))
-                            {
-                                ImgData = reader.ReadToEnd();
-                            }
-                        }
-
-                        MultipartFormDataContent formData = new MultipartFormDataContent
-                        {
-                            { new StringContent((string)uncroppedUrl["fields"]["key"]), "key" },
-                            { new StringContent((string)uncroppedUrl["fields"]["AWSAccessKeyId"]), "AWSAccessKeyId" },
-                            { new StringContent((string)uncroppedUrl["fields"]["x-amz-security-token"]),"x-amz-security-token" },
-                            { new StringContent((string)uncroppedUrl["fields"]["policy"]), "policy" },
-                            { new StringContent((string)uncroppedUrl["fields"]["signature"]), "signature" },
-                            { new StringContent(ImgData), "file" }
-                        };
-                        using (var httpClient = new HttpClient())
-                        {
-                            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
-                            httpClient.BaseAddress = new Uri((string)uncroppedUrl["url"]);
-                            var httpResponse = httpClient.PostAsync(new Uri((string)uncroppedUrl["url"]), formData).Result;
-                            if (httpResponse.StatusCode != HttpStatusCode.NoContent)
-                            {
-                                // TO DO: Handle ERROR
-                            }
-                            var responseString = httpResponse.Content.ReadAsStringAsync();
-                        }
-                    }
-                }
-                else
-                {
-                    // TO DO: Handle ERROR
-                }
-
-            }
+            TensorIoTAPI TensorAPI = new TensorIoTAPI();
+            TensorAPI.SendPicturesToAWS(UPCRefereceListSelected.UPCcode, UPCRefereceListSelected.RefNo);
         }
         private void deleteExistingPictures()
         {

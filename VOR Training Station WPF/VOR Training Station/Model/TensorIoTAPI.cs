@@ -8,54 +8,199 @@ using RestSharp;
 using RestSharp.Authenticators;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-
+using System.Net;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace VOR_Training_Station
 {
     public class TensorIoTAPI
     {
-        public string UPCcode;
-        public Collection<string> RefNo = new Collection<string>();
-        public Collection<string> SKU = new Collection<string>();
-        public Collection<string> brandName = new Collection<string>();
-        public Collection<string> desc = new Collection<string>();
-        public Collection<string> height = new Collection<string>();
-        public Collection<string> length = new Collection<string>();
-        public Collection<string> packageGroup = new Collection<string>();
-        public Collection<string> packageType = new Collection<string>();
-        public Collection<string> weight = new Collection<string>();
-        public Collection<string> width = new Collection<string>();
-
         public TensorIoTAPI()
         {
             
         }
 
-        public void getReferences(string UPCcode)
+        public ObservableCollection<UPCProductReference> GetReferenceCodes(string UPCcode)
         {
-            this.UPCcode = UPCcode;
-            var client = new RestClient("https://pygv9kdmg6.execute-api.us-west-2.amazonaws.com/dev/Pepsi/" + this.UPCcode);
-            //var client = new RestClient("https://pygv9kdmg6.execute-api.us-west-2.amazonaws.com/dev/Pepsi/0000000000124");
+            // Look for UPCcode
+            // UPCRefereceList = new ObservableCollection<UPCProductReference>();
+            // Make API call
+            var client = new RestClient("https://pygv9kdmg6.execute-api.us-west-2.amazonaws.com/dev/Pepsi/" + UPCcode);
             client.Authenticator = new HttpBasicAuthenticator("", "");
-            //var request = new RestRequest("statuses/home_timeline.json", DataFormat.Json);
             var response = client.Get(new RestRequest());
-
-            //JObject responseParsed = JObject.Parse(response.Content);
-            // TEST
-            JObject responseParsed = JObject.Parse("{'upcs':[{'UPC':'0000000000123','RefNo':'12345678','SKU':'000000000000','brandName':'GATZROLL','desc':'28OZPLGATZROLL1/15','height':'','length':'','packageGroup':'28OZPL1/15','packageType':'1234','weight':'','width':''},{'UPC':'0000000000123','RefNo':'911234567','SKU':'000000000000','brandName':'ddddd','desc':'gggggg','height':'','length':'','packageGroup':'28OZPL1/15','packageType':'1234','weight':'','width':''}]}");
-            foreach (var upcs in responseParsed["upcs"])
+            JObject responseParsed = JObject.Parse(response.Content);
+            ObservableCollection<UPCProductReference> UPCRefereceList = new ObservableCollection<UPCProductReference>();
+            foreach (var upcs in responseParsed["products"])
             {
-                this.RefNo.Add((string)upcs["RefNo"]);
-                this.SKU.Add((string)upcs["SKU"]);
-                this.brandName.Add((string)upcs["brandName"]);
-                this.desc.Add((string)upcs["desc"]);
-                this.height.Add((string)upcs["height"]);
-                this.length.Add((string)upcs["length"]);
-                this.packageGroup.Add((string)upcs["packageGroup"]);
-                this.packageType.Add((string)upcs["packageType"]);
-                this.weight.Add((string)upcs["weight"]);
-                this.width.Add((string)upcs["width"]);
+                UPCRefereceList.Add(new UPCProductReference()
+                {
+                    UPCcode = (string)upcs["UPC"],
+                    RefNo = (string)upcs["RefNo"],
+                    SKU = (string)upcs["SKU"],
+                    brandName = (string)upcs["brandName"],
+                    desc = (string)upcs["desc"],
+                    height = (string)upcs["height"],
+                    length = (string)upcs["length"],
+                    packageGroup = (string)upcs["packageGroup"],
+                    packageType = (string)upcs["RepackageTypefNo"],
+                    weight = (string)upcs["weight"],
+                    width = (string)upcs["width"]
+                });
+            }
+            return UPCRefereceList;
+        }
+        public void SendPicturesToAWS(string UPCcode, string RefNo)
+        {
+            // Create json string
+            JObject postBody =
+                new JObject(
+                    new JProperty("listOfSides",
+                        new JArray(new List<string>() {
+                            UPCcode + "-" + RefNo + "-Top",
+                            UPCcode + "-" + RefNo + "-Large",
+                            UPCcode + "-" + RefNo + "-Small",})
+                        ),
+                    new JProperty("UPC", UPCcode),
+                    new JProperty("refNo", RefNo)
+                    );
+            //string test = postBody.ToString();
+            var client = new RestClient("https://93o9cnkow3.execute-api.us-west-2.amazonaws.com/dev/imagedata");
+            client.Authenticator = new HttpBasicAuthenticator("", "");
+            var request = new RestRequest("", Method.POST);
+            request.AddParameter("application/json; charset=utf-8", postBody.ToString(), ParameterType.RequestBody);
+            request.RequestFormat = RestSharp.DataFormat.Json;
+            var response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                JObject responseParsed = JObject.Parse(response.Content);
+                JArray uncroppedUrls = (JArray)responseParsed["body"]["uncroppedUrls"];
+                JArray croppedUrls = (JArray)responseParsed["body"]["croppedUrls"];
+                JArray irUrls = (JArray)responseParsed["body"]["irUrls"];
+                if (uncroppedUrls.Count == 3 && croppedUrls.Count == 3 && irUrls.Count == 3) // all 9 urls have been returned correctly
+                {
+                    ////////////////////////////////
+                    // SEND UNCROPPED PICTURES
+                    foreach (var uncroppedUrl in uncroppedUrls)
+                    {
+                        string ImgData;
+                        string urlKey = (string)uncroppedUrl["fields"]["key"];
+                        string ImgFileName;
+                        if (urlKey.Contains("Top")) { ImgFileName = "ColorImg-Top.jpg"; }
+                        else if (urlKey.Contains("Small")) { ImgFileName = "ColorImg-Small.jpg"; }
+                        else { ImgFileName = "ColorImg-Large.jpg"; }
+                        using (FileStream stream = File.Open(ImgFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                ImgData = reader.ReadToEnd();
+                            }
+                        }
+                        MultipartFormDataContent formData = new MultipartFormDataContent
+                        {
+                            { new StringContent((string)uncroppedUrl["fields"]["key"]), "key" },
+                            { new StringContent((string)uncroppedUrl["fields"]["AWSAccessKeyId"]), "AWSAccessKeyId" },
+                            { new StringContent((string)uncroppedUrl["fields"]["x-amz-security-token"]),"x-amz-security-token" },
+                            { new StringContent((string)uncroppedUrl["fields"]["policy"]), "policy" },
+                            { new StringContent((string)uncroppedUrl["fields"]["signature"]), "signature" },
+                            { new StringContent(ImgData), "file" }
+                        };
+                        using (var httpClient = new HttpClient())
+                        {
+                            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+                            httpClient.BaseAddress = new Uri((string)uncroppedUrl["url"]);
+                            var httpResponse = httpClient.PostAsync(new Uri((string)uncroppedUrl["url"]), formData).Result;
+                            if (httpResponse.StatusCode != HttpStatusCode.NoContent)
+                            {
+                                // TO DO: Handle ERROR
+                            }
+                            var responseString = httpResponse.Content.ReadAsStringAsync();
+                        }
+                    }
+                    ////////////////////////////////
+                    // SEND CROPPED PICTURES
+                    foreach (var croppedUrl in croppedUrls)
+                    {
+                        string ImgData;
+                        string urlKey = (string)croppedUrl["fields"]["key"];
+                        string ImgFileName;
+                        if (urlKey.Contains("Top")) { ImgFileName = "ColorCropImg-Top.jpg"; }
+                        else if (urlKey.Contains("Small")) { ImgFileName = "ColorCropImg-Small.jpg"; }
+                        else { ImgFileName = "ColorCropImg-Large.jpg"; }
+                        using (FileStream stream = File.Open(ImgFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                ImgData = reader.ReadToEnd();
+                            }
+                        }
+
+                        MultipartFormDataContent formData = new MultipartFormDataContent
+                        {
+                            { new StringContent((string)croppedUrl["fields"]["key"]), "key" },
+                            { new StringContent((string)croppedUrl["fields"]["AWSAccessKeyId"]), "AWSAccessKeyId" },
+                            { new StringContent((string)croppedUrl["fields"]["x-amz-security-token"]),"x-amz-security-token" },
+                            { new StringContent((string)croppedUrl["fields"]["policy"]), "policy" },
+                            { new StringContent((string)croppedUrl["fields"]["signature"]), "signature" },
+                            { new StringContent(ImgData), "file" }
+                        };
+                        using (var httpClient = new HttpClient())
+                        {
+                            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+                            httpClient.BaseAddress = new Uri((string)croppedUrl["url"]);
+                            var httpResponse = httpClient.PostAsync(new Uri((string)croppedUrl["url"]), formData).Result;
+                            if (httpResponse.StatusCode != HttpStatusCode.NoContent)
+                            {
+                                // TO DO: Handle ERROR
+                            }
+                            var responseString = httpResponse.Content.ReadAsStringAsync();
+                        }
+                    }
+                    ////////////////////////////////
+                    // SEND DEPTH PICTURES
+                    foreach (var irUrl in irUrls)
+                    {
+                        string ImgData;
+                        string urlKey = (string)irUrl["fields"]["key"];
+                        string ImgFileName;
+                        if (urlKey.Contains("Top")) { ImgFileName = "DepthImg-Top.png"; }
+                        else if (urlKey.Contains("Small")) { ImgFileName = "DepthImg-Small.png"; }
+                        else { ImgFileName = "DepthImg-Large.png"; }
+                        using (FileStream stream = File.Open(ImgFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                ImgData = reader.ReadToEnd();
+                            }
+                        }
+                        MultipartFormDataContent formData = new MultipartFormDataContent
+                        {
+                            { new StringContent((string)irUrl["fields"]["key"]), "key" },
+                            { new StringContent((string)irUrl["fields"]["AWSAccessKeyId"]), "AWSAccessKeyId" },
+                            { new StringContent((string)irUrl["fields"]["x-amz-security-token"]),"x-amz-security-token" },
+                            { new StringContent((string)irUrl["fields"]["policy"]), "policy" },
+                            { new StringContent((string)irUrl["fields"]["signature"]), "signature" },
+                            { new StringContent(ImgData), "file" }
+                        };
+                        using (var httpClient = new HttpClient())
+                        {
+                            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+                            httpClient.BaseAddress = new Uri((string)irUrl["url"]);
+                            var httpResponse = httpClient.PostAsync(new Uri((string)irUrl["url"]), formData).Result;
+                            if (httpResponse.StatusCode != HttpStatusCode.NoContent)
+                            {
+                                // TO DO: Handle ERROR
+                            }
+                            var responseString = httpResponse.Content.ReadAsStringAsync();
+                        }
+                    }
+                }
+                else
+                {
+                    // TO DO: Handle ERROR
+                }
+
             }
         }
     }
