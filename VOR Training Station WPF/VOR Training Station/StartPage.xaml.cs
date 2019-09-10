@@ -50,9 +50,13 @@ namespace VOR_Training_Station
                     UPCReferenceList_ComboBox.ItemsSource = mw.UPCRefereceList;
                     UPCReferenceList_ComboBox.DisplayMemberPath = "comboboxDisp";
                     UPCnotfound_TextBlock.Visibility = Visibility.Collapsed;
-                    UPCcode_TextBox.Visibility = Visibility.Collapsed;
                     UPCReferenceList_ComboBox.Visibility = Visibility.Visible;
                     RescanUPC_button.Visibility = Visibility.Visible;
+
+                    StartInfoMsg.Visibility = Visibility.Collapsed;
+                    UPCcode_TextBox.IsEnabled = false;
+                    StartInfoMsgLabel.Visibility = Visibility.Visible;
+                    UPCcode_TextBox.Width = 100;
                 }
                 else {
                     mw.mwAllPicsSubmitted.Visibility = Visibility.Collapsed;
@@ -65,15 +69,10 @@ namespace VOR_Training_Station
         }
         private void UPCcode_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (UPCcode_TextBox.IsEnabled)
+            if (UPCcode_TextBox.Width == 0)
             {
                 UPCcode_TextBox.Focus();
             }
-            else
-            {
-                
-            }
-
         }
         private void RescanUPC_click(object sender, RoutedEventArgs e)
         {
@@ -81,7 +80,11 @@ namespace VOR_Training_Station
             RescanUPC_button.Visibility = Visibility.Collapsed;
             UPCcode_TextBox.Text = "";
             UPCcode_TextBox.Visibility = Visibility.Visible;
+            UPCcode_TextBox.IsEnabled = true;
             UPCcode_TextBox.Focus();
+            StartInfoMsg.Visibility = Visibility.Visible;
+            StartInfoMsgLabel.Visibility = Visibility.Collapsed;
+            UPCcode_TextBox.Width = 0;
         }
 
         private void UPCReferenceList_SelectionChanged(object sender, SelectionChangedEventArgs e)

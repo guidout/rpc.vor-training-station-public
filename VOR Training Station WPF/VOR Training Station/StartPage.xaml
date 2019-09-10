@@ -17,7 +17,8 @@
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Image Width="auto" Source="Assets/rehrig_logo.jpg" Height="80" Margin="15" VerticalAlignment="Center"/>
             <TextBlock Text="VOR Training Station" FontSize="35" HorizontalAlignment="Center" Margin="15" VerticalAlignment="Center"/>
-            <TextBlock Text="Place product on the stool and scan UPC barcode" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" Margin="5 5 5 25"/>
+            <TextBlock x:Name="StartInfoMsgLabel" Text="Scanned UPC code:" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" Visibility="Collapsed"/>
+            <TextBlock x:Name="StartInfoMsg" Text="Place product on the stool and scan UPC barcode" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" Margin="25"/>
             <TextBox x:FieldModifier="public" x:Name="UPCcode_TextBox" Width="0" TextChanged="UPCcode_TextChanged" LostFocus="UPCcode_LostFocus"/>
             <TextBlock x:Name="UPCnotfound_TextBlock" Text="UPC not found. Scan again..." Foreground="Red" FontSize="15" HorizontalAlignment="Center" Margin="5 5 5 25" Visibility="Collapsed"/>
 
