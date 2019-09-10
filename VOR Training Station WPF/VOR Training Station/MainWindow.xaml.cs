@@ -44,6 +44,7 @@ namespace VOR_Training_Station
         public ReadAppConfig appConfig = new ReadAppConfig();
         public UPCProductReference UPCRefereceListSelected;
         public ObservableCollection<UPCProductReference> UPCRefereceList = new ObservableCollection<UPCProductReference>();
+        public bool newStartPage = false;
         #endregion
         //public bool isDebugMode = false;
         #if DEBUG
@@ -191,6 +192,17 @@ namespace VOR_Training_Station
         private void DialogOK_Click(object sender, RoutedEventArgs e)
         {
             winDialog.IsOpen = false;
+        }
+
+        private void mwAllPicsSubmitted_click(object sender, RoutedEventArgs e)
+        {
+            winDialog.IsOpen = false;
+            if (newStartPage)
+            {
+                ContentFrame.Navigate(new StartPage());
+                newStartPage = false;
+            }
+            
         }
     }
 }

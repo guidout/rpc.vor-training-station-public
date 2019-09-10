@@ -38,7 +38,7 @@ namespace VOR_Training_Station
 
         private void UPCcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allCamerasAvailable && UPCcode_TextBox.Text.Length >= 13)
+            if (allCamerasAvailable && UPCcode_TextBox.Text.Length >= 12)
             {
                 mw.UPCRefereceList = new ObservableCollection<UPCProductReference>();
                 TensorIoTAPI TensorAPI = new TensorIoTAPI();
@@ -55,7 +55,7 @@ namespace VOR_Training_Station
                     RescanUPC_button.Visibility = Visibility.Visible;
                 }
                 else {
-                    mw.mwBusy.Visibility = Visibility.Collapsed;
+                    mw.mwAllPicsSubmitted.Visibility = Visibility.Collapsed;
                     mw.mwUPCnotFoundDialog.Visibility = Visibility.Visible;
                     mw.winDialog.IsOpen = true;
                     //UPCnotfound_TextBlock.Visibility = Visibility.Visible;

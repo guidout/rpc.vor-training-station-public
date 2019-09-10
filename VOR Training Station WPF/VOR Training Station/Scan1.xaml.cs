@@ -152,6 +152,8 @@ namespace VOR_Training_Station
 
             // SEND PICTURES VIA API
             sendPituresToAPI(UPCRefereceListSelected, kinectScanConfig);
+            //UPCnotfound_TextBlock.Visibility = Visibility.Visible;
+            UPCcode_TextBox.Text = "";
 
             // DELETE PICTURES (OPTIONAL)
             //deleteExistingPictures();
@@ -161,8 +163,10 @@ namespace VOR_Training_Station
             PageStatus = 2;
             // 
             DiscardStartOver_ButtonClick(null, null);
-
-
+            mw.mwAllPicsSubmitted.Visibility = Visibility.Visible;
+            mw.mwUPCnotFoundDialog.Visibility = Visibility.Collapsed;
+            mw.winDialog.IsOpen = true;
+            mw.newStartPage = true;
         }
         //private async void openDialog()
         //{
@@ -174,6 +178,9 @@ namespace VOR_Training_Station
         {
             // Send pictures to tensor
             sendPituresToAPI(UPCRefereceListSelected, kinectScanConfig);
+            mw.mwAllPicsSubmitted.Visibility = Visibility.Visible;
+            mw.mwUPCnotFoundDialog.Visibility = Visibility.Collapsed;
+            mw.winDialog.IsOpen = true;
 
             // Delete picture sent 
             //deleteExistingPictures();
