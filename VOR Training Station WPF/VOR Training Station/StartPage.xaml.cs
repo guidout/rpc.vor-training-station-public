@@ -31,6 +31,7 @@ namespace VOR_Training_Station
         public StartPage()
         {
             InitializeComponent();
+            UPCcode_TextBox.AcceptsReturn = true;
             this.DataContext = this;
             UPCcode_TextBox.Focus();
             UPCReferenceList_ComboBox.Visibility = Visibility.Collapsed;
@@ -38,8 +39,9 @@ namespace VOR_Training_Station
 
         private void UPCcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allCamerasAvailable && UPCcode_TextBox.Text.Length >= 12)
+            if (allCamerasAvailable && UPCcode_TextBox.Text.EndsWith("\r\n"))
             {
+                UPCcode_TextBox.Text = UPCcode_TextBox.Text.Replace("\r\n", "");
                 mw.UPCRefereceList = new ObservableCollection<UPCProductReference>();
                 TensorIoTAPI TensorAPI = new TensorIoTAPI();
                 Tuple< ObservableCollection<UPCProductReference>, string> APIresult = TensorAPI.GetReferenceCodes(UPCcode_TextBox.Text);

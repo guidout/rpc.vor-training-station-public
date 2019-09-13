@@ -85,7 +85,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <materialDesign:Chip Content="Top Camera" 
+                <materialDesign:Chip Content="Top Side" 
                                     FontSize="15" 
                                     FontStyle="Italic"
                                     FontWeight="Bold" 
@@ -114,7 +114,7 @@
         </materialDesign:Card>
 
         <!-- ########### -->
-        <!--SIDE 1 CAMERA-->
+        <!--SIDE LARGE CAMERA-->
         <materialDesign:Card Padding="10" 
                             Margin="10" 
                             HorizontalAlignment="Stretch" 
@@ -130,7 +130,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <materialDesign:Chip Content="Side 1 Camera" 
+                <materialDesign:Chip Content="Large Side" 
                                     FontSize="15" 
                                     FontStyle="Italic"
                                     FontWeight="Bold" 
@@ -159,7 +159,7 @@
         </materialDesign:Card>
 
         <!-- ########### -->
-        <!--SIDE 2 CAMERA-->
+        <!--SIDE SMALL CAMERA-->
         <materialDesign:Card Padding="10" 
                             Margin="10" 
                             HorizontalAlignment="Stretch" 
@@ -175,7 +175,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <materialDesign:Chip Content="Side 2 Camera" 
+                <materialDesign:Chip Content="Small Side" 
                                     FontSize="15" 
                                     FontStyle="Italic"
                                     FontWeight="Bold" 

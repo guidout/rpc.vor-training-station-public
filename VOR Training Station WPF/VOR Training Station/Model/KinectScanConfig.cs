@@ -29,7 +29,7 @@ namespace VOR_Training_Station
         public double ImgCrop_edgeTreshold_HorizTop;
         public double ImgCrop_edgeTreshold_Vert;
         public double DepthDelta_mm;
-        public bool EnableGreenChromaFilter;
+        public string chromaKeySetting;
 
         public bool takePictures = true;
         public bool keepAlive = true;
@@ -78,6 +78,10 @@ namespace VOR_Training_Station
             this.ColorCropImg1_name = ColorCropImgName_prefix + "1.jpg";
             this.ColorCropImg2_name = ColorCropImgName_prefix + "2.jpg";
         }
+        public void SetChromaKey(string chromaKeySetting)
+        {
+            this.chromaKeySetting = chromaKeySetting;
+        }
         public void makeConfigFile()
         {
             if (System.IO.File.Exists(this.configFileName)) // Probably NOT needed since WriteAllText creates the file if doesn't exist
@@ -100,6 +104,7 @@ namespace VOR_Training_Station
                 File.WriteAllText(this.configFileName, jsonContent.ToString());
             }
         }
+
         public void readConfigFile()
         {
             if (System.IO.File.Exists(this.configFileName))

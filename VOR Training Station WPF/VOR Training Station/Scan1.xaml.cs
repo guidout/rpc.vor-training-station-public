@@ -93,6 +93,7 @@ namespace VOR_Training_Station
                 ImgCrop_edgeTreshold_HorizTop: mw.appConfig.ImgCrop_edgeTreshold_HorizTop,
                 ImgCrop_edgeTreshold_Vert: mw.appConfig.ImgCrop_edgeTreshold_Vert,
                 DepthDelta_mm: mw.appConfig.DepthDelta_mm);
+            kinectScanConfig.SetChromaKey(mw.appConfig.chromaKeySetting);
             kinectScanConfig.makeConfigFile();
             Thread.Sleep(1000);
             // launch kinectscan

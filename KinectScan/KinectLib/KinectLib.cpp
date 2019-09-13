@@ -245,7 +245,7 @@ namespace KinectLib
 			return emptyMat;
 		}
 		Mat cropedImage = fullimage(Rect(VertEdge[0], HorizEdge[0], VertEdge[1] - VertEdge[0], HorizEdge[1] - HorizEdge[0]));
-		Mat croppedFiltImage = GreenScreenFilter(cropedImage);
+		Mat croppedFiltImage = GreenScreenFilter(cropedImage, AppConfig.get("chromaKeySetting", "Disabled").asString());
 		//imwrite(AppConfig.get("ColorCropImg" + to_string(camNum) + "_name", "").asString(), croppedFiltImage);
 		if (debugShow) {
 			imshow("cropped", cropedImage);
@@ -416,7 +416,7 @@ namespace KinectLib
 			return emptyMat;
 		}
 		Mat cropedImage = fullimage(Rect(VertEdge[0], HorizEdge[0], VertEdge[1] - VertEdge[0], HorizEdge[1] - HorizEdge[0]));
-		Mat croppedFiltImage = GreenScreenFilter(cropedImage);
+		Mat croppedFiltImage = GreenScreenFilter(cropedImage, AppConfig.get("chromaKeySetting", "Disabled").asString());
 		//imwrite(AppConfig.get("ColorCropImg" + to_string(camNum) + "_name", "").asString(), croppedFiltImage);
 		if (debugShow) {
 			imshow("cropped", cropedImage);
@@ -428,20 +428,27 @@ namespace KinectLib
 		//croppedFiltImage.release();
 	}
 
-	Mat GreenScreenFilter(Mat img) {
+	Mat GreenScreenFilter(Mat img, string chromaKeySetting) {
 		Mat hsv, mask, imgFilt;
 		cvtColor(img, hsv, COLOR_BGR2HSV);
-		// create a mask for green
-		inRange(hsv, Scalar(65, 60, 60), Scalar(80, 255, 255), mask);
-		//imwrite("mask.jpg", mask);
-		//mask = imread("mask.jpg");
-		// remove mask from original img
-		//bitwise_or(img, img*0, imgFilt, 255-mask);
-		bitwise_or(img, img*0+255, imgFilt, mask);
-		imgFilt = img + (imgFilt);
 
-		//bitwise_or(img, mask, imgFilt);
-		return imgFilt;
+		if (chromaKeySetting == "Green") {
+			// create a mask for green
+			inRange(hsv, Scalar(65, 60, 60), Scalar(80, 255, 255), mask);
+			bitwise_or(img, img * 0 + 255, imgFilt, mask);
+			imgFilt = img + (imgFilt);
+			return imgFilt;
+		}
+		else if (chromaKeySetting == "White") {
+			// create a mask for white
+			inRange(hsv, Scalar(0, 0, 120), Scalar(255, 38, 255), mask);
+			bitwise_or(img, img * 0 + 255, imgFilt, mask);
+			imgFilt = img + (imgFilt);
+			return imgFilt;
+		}
+		else {
+			return img;
+		}
 	}
 
 }

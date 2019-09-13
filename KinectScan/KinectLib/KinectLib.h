@@ -16,5 +16,5 @@ namespace KinectLib
 	Mat generateAndGetCroppedImg(Mat fullimage, k4a_image_t transformed_depth_image, Json::Value AppConfig, bool debugShow, bool isTopCam);
 	Mat CropAndGetImg(Mat fullimage, Mat dept2colorhMat, std::vector<uint16_t> data, Json::Value AppConfig, bool debugShow);
 	Mat CropAndGetTopCamImg(Mat fullimage, Mat dept2colorhMat, std::vector<uint16_t> data, Json::Value AppConfig, bool debugShow);
-	Mat GreenScreenFilter(Mat img);
+	Mat GreenScreenFilter(Mat img, string chromaKeySetting);
 }

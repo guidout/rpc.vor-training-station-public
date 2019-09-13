@@ -25,6 +25,7 @@ namespace VOR_Training_Station
         public double ImgCrop_edgeTreshold_HorizBottom;
         public double ImgCrop_edgeTreshold_HorizTop;
         public double ImgCrop_edgeTreshold_Vert;
+        public string chromaKeySetting;
 
         public ReadAppConfig()
         {
@@ -44,6 +45,7 @@ namespace VOR_Training_Station
                 this.ImgCrop_edgeTreshold_HorizBottom = (double)jsonAppSettings["ImgCrop_edgeTreshold_HorizBottom"];
                 this.ImgCrop_edgeTreshold_HorizTop = (double)jsonAppSettings["ImgCrop_edgeTreshold_HorizTop"];
                 this.ImgCrop_edgeTreshold_Vert = (double)jsonAppSettings["ImgCrop_edgeTreshold_Vert"];
+                this.chromaKeySetting = (string)jsonAppSettings["chromaKeySetting"];
             }
         }
     }
