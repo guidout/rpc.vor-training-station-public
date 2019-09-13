@@ -165,6 +165,7 @@ namespace VOR_Training_Station
             DiscardStartOver_ButtonClick(null, null);
             mw.mwAllPicsSubmitted.Visibility = Visibility.Visible;
             mw.mwUPCnotFoundDialog.Visibility = Visibility.Collapsed;
+            mw.mwErrorDialog.Visibility = Visibility.Collapsed;
             mw.winDialog.IsOpen = true;
             mw.newStartPage = true;
         }
@@ -180,6 +181,7 @@ namespace VOR_Training_Station
             sendPituresToAPI(UPCRefereceListSelected, kinectScanConfig);
             mw.mwAllPicsSubmitted.Visibility = Visibility.Visible;
             mw.mwUPCnotFoundDialog.Visibility = Visibility.Collapsed;
+            mw.mwErrorDialog.Visibility = Visibility.Collapsed;
             mw.winDialog.IsOpen = true;
 
             // Delete picture sent 

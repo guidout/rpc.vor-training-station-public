@@ -29,6 +29,7 @@ namespace VOR_Training_Station
         public double ImgCrop_edgeTreshold_HorizTop;
         public double ImgCrop_edgeTreshold_Vert;
         public double DepthDelta_mm;
+        public bool EnableGreenChromaFilter;
 
         public bool takePictures = true;
         public bool keepAlive = true;
