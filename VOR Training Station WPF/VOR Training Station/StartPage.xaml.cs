@@ -42,8 +42,14 @@ namespace VOR_Training_Station
             {
                 mw.UPCRefereceList = new ObservableCollection<UPCProductReference>();
                 TensorIoTAPI TensorAPI = new TensorIoTAPI();
-                mw.UPCRefereceList = TensorAPI.GetReferenceCodes(UPCcode_TextBox.Text);
-
+                Tuple< ObservableCollection<UPCProductReference>, string> APIresult = TensorAPI.GetReferenceCodes(UPCcode_TextBox.Text);
+                mw.UPCRefereceList = APIresult.Item1;
+                string errMsg = APIresult.Item2;
+                if (!string.IsNullOrEmpty(errMsg))
+                {
+                    mw.ErrorPopup(errMsg, backToMainPage:true, fromAPI:true);
+                    return;
+                }
                 bool UPCfound = mw.UPCRefereceList.Count != 0;
                 if (UPCfound)
                 {
@@ -60,6 +66,7 @@ namespace VOR_Training_Station
                 }
                 else {
                     mw.mwAllPicsSubmitted.Visibility = Visibility.Collapsed;
+                    mw.mwErrorDialog.Visibility = Visibility.Collapsed;
                     mw.mwUPCnotFoundDialog.Visibility = Visibility.Visible;
                     mw.winDialog.IsOpen = true;
                     //UPCnotfound_TextBlock.Visibility = Visibility.Visible;
@@ -92,12 +99,5 @@ namespace VOR_Training_Station
             mw.UPCRefereceListSelected = mw.UPCRefereceList[0];
             NavigationService.Navigate(new Scan1(mw.UPCRefereceListSelected));
         }
-
-        //private void DialogOK_Click(object sender, RoutedEventArgs e)
-        //{
-        //    mw.winDialog.IsOpen = false;
-        //    //StartPageDialog.IsOpen = false;
-        //    UPCcode_TextBox.Focus();
-        //}
     }
 }

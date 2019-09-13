@@ -188,7 +188,22 @@ namespace VOR_Training_Station
             Thread.Sleep(1000);
             PlayKinects();
         }
-
+        internal void ErrorPopup(string sendResult, bool backToMainPage, bool fromAPI)
+        {
+            if (backToMainPage)
+            {
+                newStartPage = true;
+            }
+            if (fromAPI)
+            {
+                sendResult = "API request error\n" + sendResult;
+            }
+            mwAllPicsSubmitted.Visibility = Visibility.Collapsed;
+            mwUPCnotFoundDialog.Visibility = Visibility.Collapsed;
+            mwErrorDialog.Visibility = Visibility.Visible;
+            mwErrorDialogText.Text = sendResult;
+            winDialog.IsOpen = true;
+        }
         private void DialogOK_Click(object sender, RoutedEventArgs e)
         {
             winDialog.IsOpen = false;
@@ -203,6 +218,16 @@ namespace VOR_Training_Station
                 newStartPage = false;
             }
             
+        }
+
+        private void mwErrorDialogButton_click(object sender, RoutedEventArgs e)
+        {
+            winDialog.IsOpen = false;
+            if (newStartPage)
+            {
+                ContentFrame.Navigate(new StartPage());
+                newStartPage = false;
+            }
         }
     }
 }

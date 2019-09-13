@@ -208,7 +208,11 @@ namespace VOR_Training_Station
         public void sendPituresToAPI(UPCProductReference UPCRefereceListSelected, KinectScanConfig kinectScanConfig)
         {
             TensorIoTAPI TensorAPI = new TensorIoTAPI();
-            TensorAPI.SendPicturesToAWS(UPCRefereceListSelected.UPCcode, UPCRefereceListSelected.RefNo);
+            string sendResult = TensorAPI.SendPicturesToAWS(UPCRefereceListSelected.UPCcode, UPCRefereceListSelected.RefNo);
+            if (!string.IsNullOrEmpty(sendResult))
+            {
+                mw.ErrorPopup(sendResult, backToMainPage:true, fromAPI:true);
+            }
         }
         private void deleteExistingPictures()
         {

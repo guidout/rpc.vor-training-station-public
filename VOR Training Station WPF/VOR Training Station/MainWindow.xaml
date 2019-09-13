@@ -26,6 +26,18 @@
     <materialDesign:DialogHost x:Name="winDialog" UseLayoutRounding="True" BorderThickness="10" BorderBrush="Wheat">
         <materialDesign:DialogHost.DialogContent>
             <StackPanel UseLayoutRounding="True">
+                <StackPanel x:Name="mwErrorDialog">
+                    <TextBlock x:Name="mwErrorDialogText"
+                               Text="Error"
+                               Margin="16"
+                               FontSize="14"
+                               FontWeight="Bold"/>
+                    <Button Click="mwErrorDialogButton_click"
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Width="100"
+                            Margin="16"
+                            Content="OK"/>
+                </StackPanel>
                 <StackPanel x:Name="mwAllPicsSubmitted">
                     <TextBlock Text="All pictures successfully submitted"
                                Margin="16"
@@ -35,10 +47,10 @@
                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Width="100"
                             Margin="16"
-                            Content="Continue"/>
+                            Content="OK"/>
                 </StackPanel>
                     <StackPanel x:Name="mwUPCnotFoundDialog" Orientation="Vertical" UseLayoutRounding="True">
-                        <TextBlock Text="UPC not found..." Margin="20" UseLayoutRounding="True"/>
+                        <TextBlock Text="UPC not found..." Margin="20" UseLayoutRounding="True" FontWeight="Bold"/>
                         <Button x:Name="dialogOKbutton" Click="DialogOK_Click" Content="Scan again" Margin="5" UseLayoutRounding="True" />
                     </StackPanel>
             </StackPanel>
