@@ -15,7 +15,7 @@
 	"ImgCrop_edgeTreshold_HorizTop" : 0.10000000000000001,
 	"ImgCrop_edgeTreshold_Vert" : 0.10000000000000001,
 	"configFileName" : "KinectScanConfig.json",
-	"exitError" : "No Kinects found",
+	"exitError" : "",
 	"keepAlive" : true,
 	"takePictures" : true
 }
