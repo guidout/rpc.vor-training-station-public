@@ -62,6 +62,7 @@ namespace VOR_Training_Station
         }
         public string SendPicturesToAWS(string UPCcode, string RefNo)
         {
+            //JObject urlKeys = new JObject();
             try
             {
                 // Create json string
@@ -86,6 +87,7 @@ namespace VOR_Training_Station
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     JObject responseParsed = JObject.Parse(response.Content);
+                    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\VOR Training Station\\urlKeys.json", responseParsed.ToString());
                     JArray uncroppedUrls = (JArray)responseParsed["body"]["uncroppedUrls"];
                     JArray croppedUrls = (JArray)responseParsed["body"]["croppedUrls"];
                     JArray irUrls = (JArray)responseParsed["body"]["irUrls"];
