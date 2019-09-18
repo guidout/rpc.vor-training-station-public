@@ -310,3 +310,4 @@ DevelopmentSandbox/PostgresEntity/Builds/
 # custom
 /KinectScan/SampleData
 /TestPictures
+!ExternalLibraries/**/
