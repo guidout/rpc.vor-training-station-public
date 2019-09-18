@@ -18,16 +18,12 @@
     <ClCompile Include="KinectScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cpp_libs\jsoncpp\dist\jsoncpp.cpp">
+    <ClCompile Include="..\..\ExternalLibraries\jsoncpp\dist\jsoncpp.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="KinectScanConfig.json" />
     <None Include="packages.config" />
-    <None Include="C:\opencv\build\x64\vc14\bin\opencv_world411.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="C:\opencv\build\x64\vc14\bin\opencv_world411d.dll" />
   </ItemGroup>
 </Project>

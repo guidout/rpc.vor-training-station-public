@@ -1,0 +1,16 @@
+{
+  "_VOR_app_scan_settings": "----------------------------------------------------------",
+  "TopCameraSerialNum": "usb://DeviceId=1;Name=Azure Kinect 4K Camera;",
+  "Side1CameraSerialNum": "usb://DeviceId=2;Name=Azure Kinect 4K Camera;",
+  "Side2CameraSerialNum": "usb://DeviceId=3;Name=Azure Kinect 4K Camera;",
+
+  "_kinect_scan_settings": "----------------------------------------------------------",
+  "FrameMarginLRSides" : 500,
+  "FrameMarginTBSides" : 250,
+  "DepthDelta_mm" : 50,
+  "ImgCrop_edgeTreshold_HorizBottom": 0.7,
+  "ImgCrop_edgeTreshold_HorizTop": 0.1,
+  "ImgCrop_edgeTreshold_Vert": 0.35,
+  "OPTIONS_for_chromaKeySetting": "White | Green | Disabled",
+  "chromaKeySetting": "Disabled"
+}

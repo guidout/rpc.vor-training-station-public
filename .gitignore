@@ -309,14 +309,4 @@ DevelopmentSandbox/PostgresEntity/Builds/
 
 # custom
 /KinectScan/SampleData
-/KinectScan/KinectScan/DepthImg2.jpg
-/KinectScan/KinectScan/DepthImg1.jpg
-/KinectScan/KinectScan/DepthImg0.jpg
-/KinectScan/KinectScan/ColorImg2.jpg
-/KinectScan/KinectScan/ColorImg1.jpg
-/KinectScan/KinectScan/ColorImg0.jpg
-/KinectScan/KinectScan/ColorCropImg2.jpg
-/KinectScan/KinectScan/ColorCropImg1.jpg
-/KinectScan/KinectScan/ColorCropImg0.jpg
-*color*.jpg
-*img*.png
+/TestPictures

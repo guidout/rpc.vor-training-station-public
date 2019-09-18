@@ -94,7 +94,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\cpp_libs\jsoncpp\dist;C:\opencv\build\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ExternalLibraries\opencv\build\include;$(SolutionDir)..\ExternalLibraries\jsoncpp\dist;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,7 +149,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\cpp_libs\jsoncpp\dist;C:\opencv\build\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ExternalLibraries\opencv\build\include;$(SolutionDir)..\ExternalLibraries\jsoncpp\dist;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -162,7 +162,6 @@
     <ClInclude Include="KinectLib.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\cpp_libs\jsoncpp\dist\jsoncpp.cpp" />
     <ClCompile Include="KinectLib.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ namespace VOR_Training_Station
                 // Look for UPCcode
                 // UPCRefereceList = new ObservableCollection<UPCProductReference>();
                 // Make API call
-                var client = new RestClient("https://pygv9kdmg6.execute-api.us-west-2.amazonaws.com/dev/Pepsi/" + UPCcode);
+                var client = new RestClient("https://iu1njk5yo4.execute-api.us-east-2.amazonaws.com/dev/Pepsi/" + UPCcode);
                 client.Authenticator = new HttpBasicAuthenticator("", "");
                 var response = client.Get(new RestRequest());
                 JObject responseParsed = JObject.Parse(response.Content);
@@ -78,7 +78,7 @@ namespace VOR_Training_Station
                     new JProperty("refNo", RefNo)
                     );
                 //string test = postBody.ToString();
-                var client = new RestClient("https://93o9cnkow3.execute-api.us-west-2.amazonaws.com/dev/imagedata");
+                var client = new RestClient("https://1or1flcaod.execute-api.us-east-2.amazonaws.com/dev/imagedata");
                 client.Authenticator = new HttpBasicAuthenticator("", "");
                 var request = new RestRequest("", Method.POST);
                 request.AddParameter("application/json; charset=utf-8", postBody.ToString(), ParameterType.RequestBody);
@@ -213,7 +213,7 @@ namespace VOR_Training_Station
                     new JProperty("refNo", RefNo)
                     );
             //string test = postBody.ToString();
-            var client = new RestClient("https://93o9cnkow3.execute-api.us-west-2.amazonaws.com/dev/imagedata");
+            var client = new RestClient("https://1or1flcaod.execute-api.us-east-2.amazonaws.com/dev/imagedata");
             client.Authenticator = new HttpBasicAuthenticator("", "");
             var request = new RestRequest("", Method.POST);
             request.AddParameter("application/json; charset=utf-8", postBody.ToString(), ParameterType.RequestBody);

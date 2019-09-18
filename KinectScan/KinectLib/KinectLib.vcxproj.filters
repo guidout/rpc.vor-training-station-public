@@ -23,9 +23,6 @@
     <ClCompile Include="KinectLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cpp_libs\jsoncpp\dist\jsoncpp.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
