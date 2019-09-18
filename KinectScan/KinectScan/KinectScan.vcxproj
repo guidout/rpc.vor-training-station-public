@@ -142,6 +142,12 @@
     <ClCompile Include="KinectScan.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CopyFileToFolders Include="..\..\ExternalLibraries\opencv\build\x64\vc14\bin\opencv_world411.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\..\ExternalLibraries\opencv\build\x64\vc14\bin\opencv_world411d.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
     <None Include="KinectScanConfig.json">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

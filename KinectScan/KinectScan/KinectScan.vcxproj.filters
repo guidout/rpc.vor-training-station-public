@@ -26,4 +26,8 @@
     <None Include="KinectScanConfig.json" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\..\ExternalLibraries\opencv\build\x64\vc14\bin\opencv_world411.dll" />
+    <CopyFileToFolders Include="..\..\ExternalLibraries\opencv\build\x64\vc14\bin\opencv_world411d.dll" />
+  </ItemGroup>
 </Project>
